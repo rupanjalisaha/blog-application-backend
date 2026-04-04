@@ -11,6 +11,7 @@
 	<groupId>com.projects</groupId>
 	<artifactId>blogger-management-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>blogger-management-system</name>
 	<description>basic CRUD project using springboot</description>
 	<url/>
