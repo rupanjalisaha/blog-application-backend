@@ -73,8 +73,8 @@ public class UserController {
     }
 	
     @GetMapping("/")
-    public ResponseEntity<?> shareApiInfo(){
-    	return ResponseEntity.ok().body(Map.of("message", "blog portal apis are running now please use postman to test the apis"));
+    public String shareApiInfo(){
+    	return ("blog portal apis are running now please use postman to test the apis");
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody BloggerRequest user) {
