@@ -30,8 +30,9 @@ public class Post {
 	public String postTitle;
 	
 	@Lob
-	@Column(name="article_body",columnDefinition = "TEXT", nullable=false)
-	public String postBody;
+	@Column(name="article_body", nullable=false)
+	private String postBody;
+	
 	
 	public Long getPostId() {
 		return Id;
