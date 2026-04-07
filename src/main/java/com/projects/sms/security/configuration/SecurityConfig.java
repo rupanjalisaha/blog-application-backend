@@ -67,7 +67,7 @@ public class SecurityConfig {
 						.requestMatchers("/UVB/register").permitAll()
 						.requestMatchers("/UVB/users/reset-password/**").permitAll()
 						//test endpoint
-						.requestMatchers("/").permitAll()
+						.requestMatchers(HttpMethod.GET,"/**").permitAll()
 						
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
