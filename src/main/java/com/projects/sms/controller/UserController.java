@@ -72,6 +72,10 @@ public class UserController {
         return new HashSet<>(Collections.singleton(role));
     }
 	
+    @GetMapping("/")
+    public ResponseEntity<?> shareApiInfo(){
+    	return ResponseEntity.ok().body(Map.of("message", "blog portal apis are running now please use postman to test the apis"));
+    }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody BloggerRequest user) {
     	try {
@@ -113,7 +117,6 @@ public class UserController {
         }
     }    
     
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/bloggerDetails")
 	List<Blogger> getBloggerDetails(){
 		return userRepository.findAll();
