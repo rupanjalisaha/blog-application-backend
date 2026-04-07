@@ -69,7 +69,6 @@ public class SecurityConfig {
 						.requestMatchers("/UVB/users/reset-password/**").permitAll()
 						//.requestMatchers("/UVB/admin/**").hasRole("ADMIN") // Example role check
 	                    //.requestMatchers("/UVB/user/**").hasAnyRole("USER", "ADMIN")
-						.anyRequest().authenticated()
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
