@@ -62,11 +62,13 @@ public class SecurityConfig {
 				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/").permitAll()
 						.requestMatchers("/UVB/login").permitAll()
 						.requestMatchers("/UVB/register").permitAll()
 						.requestMatchers("/UVB/users/reset-password/**").permitAll()
 						//.requestMatchers("/UVB/admin/**").hasRole("ADMIN") // Example role check
 	                    //.requestMatchers("/UVB/user/**").hasAnyRole("USER", "ADMIN")
+						.anyRequest().authenticated()
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
