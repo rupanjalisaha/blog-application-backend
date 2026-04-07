@@ -62,7 +62,9 @@ public class SecurityConfig {
 				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-						.requestMatchers("/").permitAll()
+					    .requestMatchers("/", "/error").permitAll()
+					    .requestMatchers(HttpMethod.GET, "/**").permitAll()
+					    .requestMatchers(HttpMethod.HEAD, "/").permitAll()
 						.requestMatchers("/UVB/login").permitAll()
 						.requestMatchers("/UVB/register").permitAll()
 						.requestMatchers("/UVB/users/reset-password/**").permitAll()

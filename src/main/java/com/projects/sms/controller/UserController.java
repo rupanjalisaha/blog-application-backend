@@ -40,28 +40,26 @@ import java.util.stream.Collectors;
 @RequestMapping("/UVB")
 public class UserController {
     
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
-	@Autowired
 	private final CustomUserDetails userDetails;
 	
-	@Autowired
-	private BloggerRoleService bloggerRoleService;
-	@Autowired
-    private AuthService service;
+	private final BloggerRoleService bloggerRoleService;
 	
-	@Autowired
-	private ResetPasswordService resetService;
+    private final AuthService service;
 	
-	@Autowired
-	private RoleRepository roleRepository;
+
+	private final ResetPasswordService resetService;
 	
-	@Autowired
-	private ProfileImageRepository profileImageRepository;
+
+	private final RoleRepository roleRepository;
 	
-    UserController(BloggerRoleService bloggerRoleService,UserRepository userRepository,AuthService service, RoleRepository roleRepository, CustomUserDetails userDetails) { 
+	private final ProfileImageRepository profileImageRepository;
+	
+    UserController(BloggerRoleService bloggerRoleService,ResetPasswordService resetService, ProfileImageRepository profileImageRepository, UserRepository userRepository,AuthService service, RoleRepository roleRepository, CustomUserDetails userDetails) { 
         this.bloggerRoleService=bloggerRoleService;
+        this.resetService=resetService;
+        this.profileImageRepository=profileImageRepository;
         this.userRepository=userRepository;
         this.service=service;
         this.roleRepository = roleRepository;
