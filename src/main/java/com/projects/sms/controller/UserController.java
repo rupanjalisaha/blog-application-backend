@@ -202,7 +202,7 @@ public class UserController {
         boolean profileExists = profileImageRepository.existsByBloggerId(bloggerId);
         boolean imageExists = profileImageRepository.existsByFileName(StringUtils.cleanPath(file.getOriginalFilename()));
         if(profileExists && imageExists) {
-        	profileImageRepository.deleteProfileImageById(bloggerId);
+        	profileImageRepository.deleteProfileImageByBloggerId(bloggerId);
             ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
             return ResponseEntity.ok(Map.of(
                     "message", "Uploaded Profile Image",
@@ -228,7 +228,7 @@ public class UserController {
 	public ResponseEntity<?> getProfileImageById(@PathVariable Long id) {
 		boolean profileExists = profileImageRepository.existsByBloggerId(id);
 		if(!profileExists) {
-        	return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "No profile image exists for bloggerId"+id));
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "No profile image exists for bloggerId"+id));
         }
 		try {
         ProfileImage image = ( profileImageRepository.findProfileImageByBloggerId(id))
@@ -249,7 +249,7 @@ public class UserController {
 		
 		
 		if(imageExists) {
-			profileImageRepository.deleteProfileImageById(id);
+			profileImageRepository.deleteProfileImageByBloggerId(id);
 		}
 		return ResponseEntity.ok(Map.of("message","Profile image deleted successfully"));
 	}

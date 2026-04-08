@@ -19,14 +19,14 @@ public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long
     Optional <ProfileImage> findProfileImageByBloggerId(@Param("blogger_id") Long bloggerId);
 	
 	@Query(value="SELECT COUNT(*) > 0 FROM profile WHERE blogger_id=:blogger_id", nativeQuery = true)
-	boolean existsByBloggerId(@Param("blogger_id") Long bloggerId);
+	Boolean existsByBloggerId(@Param("blogger_id") Long bloggerId);
 	
 	@Modifying
 	@Transactional
 	@Query(value="delete from profile where blogger_id=:blogger_id",nativeQuery = true)
-	void deleteProfileImageById(@Param("blogger_id") Long bloggerId);
+	void deleteProfileImageByBloggerId(@Param("blogger_id") Long bloggerId);
 
 	@Query(value="SELECT COUNT(*) > 0 FROM profile WHERE image_name=:image_name", nativeQuery=true)
-	boolean existsByFileName(@Param("image_name") String imageName);
+	Boolean existsByFileName(@Param("image_name") String imageName);
 	
 }
