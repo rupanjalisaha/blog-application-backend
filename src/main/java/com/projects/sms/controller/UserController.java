@@ -77,9 +77,9 @@ public class UserController {
     	return ("blog portal apis are running now please use postman to test the apis");
     }
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody BloggerRequest user) {
+    public ResponseEntity<?> register(@RequestBody BloggerRequest request) {
     	try {
-        Blogger blogger = service.register(user);
+        Blogger blogger = service.register(request);
         return ResponseEntity.ok(Map.of(
                 "message", "Registered",
                 "bloggerId", blogger.getId(),
@@ -98,12 +98,12 @@ public class UserController {
         return ResponseEntity.ok("Role assigned");
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Blogger user) {
+    public ResponseEntity<?> login(@RequestBody Blogger request) {
     	
-    	Blogger blogger=userRepository.findByUsername(user.getUsername())
+    	Blogger blogger=userRepository.findByUsername(request.getUsername())
     			.orElseThrow(()->new RuntimeException("User not found"));
         try {
-        String token = service.login(user.getUsername(), user.getPassword());
+        String token = service.login(request.getUsername(), request.getPassword());
         return ResponseEntity.ok(Map.of(
                 "message", "Login Successful",
                 "bloggerId", blogger.getId(),

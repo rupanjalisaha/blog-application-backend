@@ -51,7 +51,7 @@ public class Blogger{
 		)
 		private Set<ProfileImage> images = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "blogger_roles",
     joinColumns = @JoinColumn(name = "blogger_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles= new HashSet<>();
