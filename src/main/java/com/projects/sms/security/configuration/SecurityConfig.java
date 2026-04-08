@@ -65,7 +65,7 @@ public class SecurityConfig {
 						//public endpoints
 						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/users/reset-password/**").permitAll()
 						//test endpoint
-						.requestMatchers(HttpMethod.GET,"/").permitAll()
+						.requestMatchers(HttpMethod.GET,"/**").permitAll()
 						
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -82,10 +82,10 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         //config.addAllowedOrigin("http://localhost:3000");        
-        config.setAllowedOrigins(List.of("https://blogger-management-system.vercel.app", "https://blogger-management-system-6rus32zhl-rupanjalisahas-projects.vercel.app")); // React app
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("https://blogger-management-system.vercel.app", "https://blogger-management-system-6rus32zhl-rupanjalisahas-projects.vercel.app")); // React app
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
