@@ -65,7 +65,7 @@ public class SecurityConfig {
 						//public endpoints
 						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/users/reset-password/**").permitAll()
 						//test endpoint
-						.requestMatchers(HttpMethod.GET,"/UVB/**").permitAll()
+						.requestMatchers(HttpMethod.GET,"/**").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/UVB/**").authenticated()
 						.requestMatchers(HttpMethod.DELETE, "/UVB/**").authenticated()
 						.requestMatchers(HttpMethod.POST, "/UVB/**").authenticated()
