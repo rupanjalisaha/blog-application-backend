@@ -73,7 +73,7 @@ public class UserController {
 	
     @GetMapping("/")
     public String shareApiInfo(){
-    	return ("blog portal apis are running now please use postman to test the apis, Get endpoint: /UVB/bloggerDetails");
+    	return ("blog portal apis are running now please use postman to test the apis");
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody BloggerRequest request) {
