@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin("https://blogger-management-system.vercel.app")
-//@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/UVB")
 public class UserController {
@@ -74,7 +73,7 @@ public class UserController {
 	
     @GetMapping("/")
     public String shareApiInfo(){
-    	return ("blog portal apis are running now please use postman to test the apis");
+    	return ("blog portal apis are running now please use postman to test the apis, Get endpoint: /UVB/bloggerDetails");
     }
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody BloggerRequest request) {
