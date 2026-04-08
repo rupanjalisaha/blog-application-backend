@@ -198,8 +198,8 @@ public class UserController {
                     .body(Map.of("error", "Unauthorized user"));
         }
         
-        boolean profileExists = profileImageRepository.existsByBloggerId(bloggerId)>0;
-        boolean imageExists = profileImageRepository.existsByFileName(file.getOriginalFilename())>0;
+        boolean profileExists = profileImageRepository.existsByBloggerId(bloggerId);
+        boolean imageExists = profileImageRepository.existsByFileName(file.getOriginalFilename());
         if(profileExists && imageExists) {
         	profileImageRepository.deleteProfileImageById(bloggerId);
             ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
@@ -225,7 +225,7 @@ public class UserController {
 	@GetMapping(value="/bloggers/profileImages/{id}")
 	
 	public ResponseEntity<?> getProfileImageById(@PathVariable Long id) {
-		boolean profileExists = profileImageRepository.existsByBloggerId(id)>0;
+		boolean profileExists = profileImageRepository.existsByBloggerId(id);
 		if(!profileExists) {
         	return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "No profile image exists for bloggerId"+id));
         }
@@ -244,7 +244,7 @@ public class UserController {
 		ProfileImage image = ( profileImageRepository.findProfileImageByBloggerId(id))
                 .orElseThrow(() -> new RuntimeException("Image not found"));
 		 
-		boolean imageExists = profileImageRepository.existsByBloggerId(id) > 0;
+		boolean imageExists = profileImageRepository.existsByBloggerId(id);
 		
 		
 		if(imageExists) {
