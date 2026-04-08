@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -199,7 +200,7 @@ public class UserController {
         }
         
         boolean profileExists = profileImageRepository.existsByBloggerId(bloggerId);
-        boolean imageExists = profileImageRepository.existsByFileName(file.getOriginalFilename());
+        boolean imageExists = profileImageRepository.existsByFileName(StringUtils.cleanPath(file.getOriginalFilename()));
         if(profileExists && imageExists) {
         	profileImageRepository.deleteProfileImageById(bloggerId);
             ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
@@ -210,7 +211,7 @@ public class UserController {
         	
         }else if(!profileExists && imageExists) {
         	return ResponseEntity.status(HttpStatus.FORBIDDEN)
-        			.body(Map.of("error", "Profile Image"+file.getOriginalFilename()+" already exists for another user"));
+        			.body(Map.of("error", "Profile Image"+StringUtils.cleanPath(file.getOriginalFilename())+" already exists for another user"));
         }
         else {
         ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
