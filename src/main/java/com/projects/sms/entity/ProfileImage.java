@@ -29,6 +29,7 @@ public class ProfileImage {
 	private String fileType;
 	
 	@Lob
+	@JsonIgnore
 	@Column(name="image_data")
 	private byte[] imageData;
 	
