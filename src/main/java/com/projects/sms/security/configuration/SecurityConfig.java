@@ -65,7 +65,10 @@ public class SecurityConfig {
 						//public endpoints
 						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/users/reset-password/**").permitAll()
 						//test endpoint
-						.requestMatchers(HttpMethod.GET,"/**").permitAll()
+						.requestMatchers(HttpMethod.GET,"/UVB/**").authenticated()
+						.requestMatchers(HttpMethod.PUT, "/UVB/**").authenticated()
+						.requestMatchers(HttpMethod.DELETE, "/UVB/**").authenticated()
+						.requestMatchers(HttpMethod.POST, "/UVB/**").authenticated()
 						
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
