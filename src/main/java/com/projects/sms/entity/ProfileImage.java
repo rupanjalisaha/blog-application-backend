@@ -32,7 +32,7 @@ public class ProfileImage {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@JsonIgnore
-	@Column(name="image_data")
+	@Column(name="image_data", columnDefinition = "BYTEA")
 	private byte[] imageData;
 	
 	@Column(name="blogger_name", unique=true)
