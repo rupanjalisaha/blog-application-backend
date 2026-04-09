@@ -29,10 +29,9 @@ public class ProfileImage {
 	@Column(name="image_type")
 	private String fileType;
 	
-	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@JsonIgnore
-	@Column(name="image_data", columnDefinition = "BYTEA")
+	@Column(name="image_data")
 	private byte[] imageData;
 	
 	@Column(name="blogger_name", unique=true)
