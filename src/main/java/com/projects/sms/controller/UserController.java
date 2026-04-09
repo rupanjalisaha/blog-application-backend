@@ -1,5 +1,6 @@
 package com.projects.sms.controller;
 
+import com.projects.sms.dtos.ProfileImageDto;
 import com.projects.sms.entity.Blogger;
 import com.projects.sms.entity.BloggerRequest;
 import com.projects.sms.entity.Post;
@@ -27,6 +28,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -65,6 +67,7 @@ public class UserController {
         this.roleRepository = roleRepository;
         this.userDetails = userDetails;
     }
+    
     public Set<Role> mapRole(String roleName) {
         Role role = roleRepository.findByName(roleName)
             .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
@@ -72,6 +75,23 @@ public class UserController {
         return new HashSet<>(Collections.singleton(role));
     }
 	
+    public class ProfileImageMapper {
+    	
+    	public ProfileImageDto mapToDto(ProfileImage image) {
+
+            String base64 = null;
+
+            if (image.getImageData() != null) {
+                base64 = Base64.getEncoder().encodeToString(image.getImageData());
+            }
+            
+            return new ProfileImageDto(
+                image.getId(),
+                image.getFileName(),
+                image.getFileType(),
+                base64
+            );
+        }
     @GetMapping("/")
     public String shareApiInfo(){
     	return ("blog portal apis are running now please use postman to test the apis");
@@ -198,12 +218,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "Unauthorized user"));
         }
-        
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new RuntimeException("File too large");
+        }
         boolean profileExists = profileImageRepository.existsByBloggerId(bloggerId);
         boolean imageExists = profileImageRepository.existsByFileName(StringUtils.cleanPath(file.getOriginalFilename()));
+        ProfileImage image;
+        
         if(profileExists && imageExists) {
         	profileImageRepository.deleteProfileImageByBloggerId(bloggerId);
-            ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
+            image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
             return ResponseEntity.ok(Map.of(
                     "message", "Uploaded Profile Image",
                     "imageId", image.getId()
@@ -214,12 +238,12 @@ public class UserController {
         			.body(Map.of("error", "Profile Image"+StringUtils.cleanPath(file.getOriginalFilename())+" already exists for another user"));
         }
         else {
-        ProfileImage image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
+        image = userDetails.uploadImage(blogger.getFullName(), bloggerId, file);
 
-        return ResponseEntity.ok(Map.of(
-                "message", "Uploaded",
-                "imageId", image.getId()
-        ));
+        ProfileImageDto dto = mapToDto(image);
+
+        return ResponseEntity.ok(dto);
+
         }
     }
 
@@ -233,7 +257,10 @@ public class UserController {
 		try {
         ProfileImage image = ( profileImageRepository.findProfileImageByBloggerId(id))
                 .orElseThrow(() -> new RuntimeException("Image not found"));
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(image.getFileType())).body(image.getImageData());
+       
+        ProfileImageDto dto = mapToDto(image);
+
+        return ResponseEntity.ok(dto);
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","Profile image for user id "+id+" was not found"));
 		}
@@ -244,14 +271,12 @@ public class UserController {
 		
 		ProfileImage image = ( profileImageRepository.findProfileImageByBloggerId(id))
                 .orElseThrow(() -> new RuntimeException("Image not found"));
-		 
-		boolean imageExists = profileImageRepository.existsByBloggerId(id);
+		 		
+		ProfileImageDto dto = mapToDto(image);
 		
-		
-		if(imageExists) {
-			profileImageRepository.deleteProfileImageByBloggerId(id);
-		}
-		return ResponseEntity.ok(Map.of("message","Profile image deleted successfully"));
+		profileImageRepository.deleteProfileImageByBloggerId(id);
+		return ResponseEntity.ok(Map.of("message","Profile image deleted successfully", "deletedImage", dto));
 	}
+    }
 }
 

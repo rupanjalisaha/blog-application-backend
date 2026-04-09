@@ -30,14 +30,15 @@ public class ProfileImage {
 	private String fileType;
 	
 	@Lob
-	@Basic(fetch = FetchType.EAGER)
+	@Basic(fetch = FetchType.LAZY)
+	@JsonIgnore
 	@Column(name="image_data")
 	private byte[] imageData;
 	
 	@Column(name="blogger_name", unique=true)
 	private String bloggerName;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="blogger_id", nullable=false)
 	@JsonIgnore
 	private Blogger blogger;
