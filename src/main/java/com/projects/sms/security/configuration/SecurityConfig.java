@@ -68,8 +68,6 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET,"/**").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/UVB/**").authenticated()
 						.requestMatchers(HttpMethod.DELETE, "/UVB/**").authenticated()
-						.requestMatchers(HttpMethod.POST, "/UVB/bloggers/**").authenticated()
-						.requestMatchers(HttpMethod.POST, "/UVB/blogs/**").authenticated()
 						
 						)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
