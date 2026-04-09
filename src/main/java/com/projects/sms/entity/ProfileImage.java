@@ -3,6 +3,7 @@ package com.projects.sms.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,7 +30,7 @@ public class ProfileImage {
 	private String fileType;
 	
 	@Lob
-	@JsonIgnore
+	@Basic(fetch = FetchType.EAGER)
 	@Column(name="image_data")
 	private byte[] imageData;
 	
