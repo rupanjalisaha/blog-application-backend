@@ -83,12 +83,16 @@ public class UserController {
                 base64 = Base64.getEncoder().encodeToString(image.getImageData());
             }
             
-            return new ProfileImageDto(
+            ProfileImageDto dto = new ProfileImageDto(
                 image.getId(),
                 image.getFileName(),
                 image.getFileType(),
                 base64
             );
+            
+            dto.setBloggerId(image.getBlogger().getId());
+            dto.setBloggerName(image.getBlogger().getFullName());
+            return dto;
         }
     	
     @GetMapping("/")
