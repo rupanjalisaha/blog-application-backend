@@ -74,8 +74,6 @@ public class UserController {
 
         return new HashSet<>(Collections.singleton(role));
     }
-	
-    public class ProfileImageMapper {
     	
     	public ProfileImageDto mapToDto(ProfileImage image) {
 
@@ -92,6 +90,7 @@ public class UserController {
                 base64
             );
         }
+    	
     @GetMapping("/")
     public String shareApiInfo(){
     	return ("blog portal apis are running now please use postman to test the apis");
@@ -277,6 +276,5 @@ public class UserController {
 		profileImageRepository.deleteProfileImageByBloggerId(id);
 		return ResponseEntity.ok(Map.of("message","Profile image deleted successfully", "deletedImage", dto));
 	}
-    }
 }
 
