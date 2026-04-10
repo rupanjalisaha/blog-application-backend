@@ -64,6 +64,10 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						//public endpoints
 						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/users/reset-password/**").permitAll()
+						//public Image API
+						.requestMatchers(HttpMethod.GET,
+							    "/UVB/bloggers/profileImages/**"
+							).permitAll()
 						//test endpoint
 						.requestMatchers(HttpMethod.GET,"/UVB/**").authenticated()
 						.requestMatchers(HttpMethod.PUT, "/UVB/**").authenticated()
