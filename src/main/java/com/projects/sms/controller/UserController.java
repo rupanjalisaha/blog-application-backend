@@ -91,7 +91,7 @@ public class UserController {
             );
             
             dto.setBloggerId(image.getBlogger().getId());
-            dto.setBloggerName(image.getBlogger().getFullName());
+            dto.setBloggerName(image.getBlogger().getUsername());
             return dto;
         }
     	
