@@ -156,6 +156,19 @@ public class UserController {
 		
 	}
 	
+    @GetMapping("/email-verification")
+    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
+
+        String result = service.verifyEmail(token);
+
+        if (result.equals("Email verified successfully") ||
+            result.equals("Already verified")) {
+            return ResponseEntity.ok(result);
+        }
+
+        return ResponseEntity.badRequest().body(result);
+    }
+
 	@PutMapping("/user/{id}")
 	Blogger updateBlogger(@RequestBody BloggerRequest request, @PathVariable Long id) {
 		Blogger targetUser = userRepository.findById(id)

@@ -1,15 +1,11 @@
 package com.projects.sms.repository;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.projects.sms.entity.Post;
 import com.projects.sms.entity.ProfileImage;
 
 import jakarta.transaction.Transactional;

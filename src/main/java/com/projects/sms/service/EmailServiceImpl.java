@@ -1,0 +1,34 @@
+package com.projects.sms.service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailServiceImpl implements EmailService {
+
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Value("${app.base-url}")
+	private String baseUrl; // e.g. http://localhost:3000
+	
+	@Override
+	public void sendVerificationEmail(String to, String token) {
+	
+	    String verificationLink = baseUrl + "/verify?token=" + token;
+	
+	    SimpleMailMessage message = new SimpleMailMessage();
+	    message.setTo(to);
+	    message.setSubject("Email Verification");
+	    message.setText(
+	            "Click the link below to verify your email:\n\n" +
+	            verificationLink +
+	            "\n\nThis link will expire in 24 hours."
+	        );
+	
+	        mailSender.send(message);
+	    }
+}
+	

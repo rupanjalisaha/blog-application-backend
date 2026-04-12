@@ -1,17 +1,8 @@
 package com.projects.sms.entity;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import java.time.LocalDateTime;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,7 +34,9 @@ public class Blogger{
 	private String email;
 	@Column(name="message")
 	private String message;
-	
+	private boolean isVerified = false;
+	private String verificationToken;
+	private LocalDateTime expiryDate;
 	@OneToMany(
 		    mappedBy = "blogger",
 		    cascade = CascadeType.ALL,
@@ -58,6 +51,12 @@ public class Blogger{
     
 	public Set<Role> getRoles() {
 		return roles;
+	}
+	public LocalDateTime getExpiryDate() {
+		return expiryDate;
+	}
+	public void setExpiryDate(LocalDateTime expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
@@ -121,5 +120,17 @@ public class Blogger{
 	    images.remove(image);
 	    image.setBlogger(null);
 	}
-
+	public boolean isVerified() {
+		return isVerified;
+	}
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+	public String getVerificationToken() {
+		return verificationToken;
+	}
+	public void setVerificationToken(String verificationToken) {
+		this.verificationToken = verificationToken;
+	}
+	
 }

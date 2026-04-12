@@ -1,7 +1,5 @@
 package com.projects.sms.security.configuration;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import java.util.List;
 import com.projects.sms.entity.JwtFilter;
 import com.projects.sms.repository.UserRepository;
 import com.projects.sms.service.CustomUserDetails;
@@ -50,7 +48,8 @@ public class SecurityConfig {
 	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetails);
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(customUserDetails);
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
@@ -63,7 +62,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						//public endpoints
-						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/users/reset-password/**").permitAll()
+						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/email-verification", "/UVB/users/reset-password/**").permitAll()
 						//public Image API
 						.requestMatchers(HttpMethod.GET,
 							    "/UVB/bloggers/profileImages/**"

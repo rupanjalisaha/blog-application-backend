@@ -1,9 +1,11 @@
 package com.projects.sms.service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class AuthService {
 
 	@Autowired
 	private CustomUserDetails customUserDetails;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	private ResetPasswordRequest resetPassword;
 	
@@ -73,8 +78,34 @@ public class AuthService {
     	blogger.setMessage(request.getMessage());
     	blogger.setCategory(request.getCategory()); 
         blogger.setRoles(mapRole(request.getRole()));
+        String token = UUID.randomUUID().toString();
+    	blogger.setVerificationToken(token);
+    	blogger.setVerified(false);
+    	blogger.setExpiryDate(LocalDateTime.now().plusMinutes(20));
         repo.save(blogger);
+        emailService.sendVerificationEmail(blogger.getEmail(), token);
         return blogger;
+    }
+    public String verifyEmail(String token) {
+
+        Blogger blogger = repo.findByVerificationToken(token)
+                .orElseThrow(() -> new RuntimeException("Invalid token"));
+
+        if (blogger.isVerified()) {
+            return "Already verified";
+        }
+
+        if (blogger.getExpiryDate().isBefore(LocalDateTime.now())) {
+            return "Token expired";
+        }
+
+        blogger.setVerified(true);
+        blogger.setVerificationToken(null);
+        blogger.setExpiryDate(null);
+
+        repo.save(blogger);
+
+        return "Email verified successfully";
     }
     
 	/*
@@ -86,7 +117,6 @@ public class AuthService {
 	 * IMPORTANT repo.save(blogger); }
 	 */
     public String login(String username, String password) {
-
         manager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );

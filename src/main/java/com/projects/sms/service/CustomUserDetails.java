@@ -16,7 +16,7 @@ import com.projects.sms.entity.ProfileImage;
 import com.projects.sms.repository.ProfileImageRepository;
 import com.projects.sms.repository.RoleRepository;
 import com.projects.sms.repository.UserRepository;
-
+import org.springframework.security.authentication.DisabledException;
 
 @Service
 public class CustomUserDetails implements UserDetailsService{
@@ -36,8 +36,12 @@ public class CustomUserDetails implements UserDetailsService{
 	
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    	
     	Blogger blogger = userRepository.findByUsername(username)
     			.orElseThrow(()->new UsernameNotFoundException("Blogger not found with username "+username));
+    	if (!blogger.isVerified()) {
+    	    throw new DisabledException("Please verify your email first");
+    	}
                 return new BloggerDetails(blogger);
     }
     

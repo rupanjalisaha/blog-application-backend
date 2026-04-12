@@ -14,6 +14,8 @@ import com.projects.sms.entity.Post;
 public interface UserRepository extends JpaRepository<Blogger, Long> {
     Optional<Blogger> findByUsername(String username);
     
+    Optional<Blogger> findByVerificationToken(String token);
+    
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "UPDATE blogger SET password = :password WHERE username = :username", nativeQuery = true)
