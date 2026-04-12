@@ -24,6 +24,7 @@ import com.projects.sms.entity.ResetPasswordRequest;
 import com.projects.sms.entity.Role;
 import com.projects.sms.repository.RoleRepository;
 import com.projects.sms.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -70,6 +71,7 @@ public class AuthService {
         return new HashSet<>(Collections.singleton(role));
     }
 
+    @Transactional
     public Blogger register(BloggerRequest request) {
     	if (repo.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username already exists");
