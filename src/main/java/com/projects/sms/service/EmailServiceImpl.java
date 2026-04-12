@@ -29,10 +29,10 @@ public class EmailServiceImpl implements EmailService {
         Email from = new Email(System.getenv("SENDGRID_FROM_EMAIL"));
         Email to = new Email(toEmail);
 
-        String subject = "Verify your email";
+        String subject = "Verify your email for uvbportal account";
 
         String contentText =
-                "Click to verify: https://your-app.com/verify?token=" + token;
+                "Click to verify: " + baseUrl+"/verify?token=" + token;
 
         Content content = new Content("text/plain", contentText);
 
