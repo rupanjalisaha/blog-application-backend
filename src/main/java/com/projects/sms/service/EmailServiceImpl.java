@@ -22,6 +22,8 @@ public class EmailServiceImpl implements EmailService {
 	@Override
     public void sendVerificationEmail(String toEmail, String token) {
 
+		System.out.println("API KEY: " + System.getenv("SENDGRID_API_KEY"));
+		System.out.println("FROM EMAIL: " + System.getenv("SENDGRID_FROM_EMAIL"));
         String apiKey = System.getenv("SENDGRID_API_KEY");
 
         SendGrid sg = new SendGrid(apiKey);
@@ -30,9 +32,10 @@ public class EmailServiceImpl implements EmailService {
         Email to = new Email(toEmail);
 
         String subject = "Verify your email for uvbportal account";
-
+        
+        String verificationUrl = baseUrl +"/verify?token=" + token;
         String contentText =
-                "Click to verify: " + baseUrl+"/verify?token=" + token;
+                "Click to verify: " + verificationUrl;
 
         Content content = new Content("text/plain", contentText);
 
@@ -45,7 +48,8 @@ public class EmailServiceImpl implements EmailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
 
-            sg.api(request);
+            Response response = sg.api(request);
+            System.out.println("Status Code: " + response.getStatusCode());
 
         } catch (IOException ex) {
             throw new RuntimeException("Email sending failed", ex);
