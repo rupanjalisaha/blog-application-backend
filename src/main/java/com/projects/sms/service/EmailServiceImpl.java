@@ -1,34 +1,56 @@
 package com.projects.sms.service;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import com.sendgrid.*;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 
-@Service
+;@Service
+
 public class EmailServiceImpl implements EmailService {
 
-	@Autowired
-	private JavaMailSender mailSender;
 	
 	@Value("${app.base-url}")
 	private String baseUrl; // e.g. http://localhost:3000
 	
 	@Override
-	public void sendVerificationEmail(String to, String token) {
-	
-	    String verificationLink = baseUrl + "/verify?token=" + token;
-	
-	    SimpleMailMessage message = new SimpleMailMessage();
-	    message.setTo(to);
-	    message.setSubject("Email Verification");
-	    message.setText(
-	            "Click the link below to verify your email:\n\n" +
-	            verificationLink +
-	            "\n\nThis link will expire in 24 hours."
-	        );
-	
-	        mailSender.send(message);
-	    }
+    public void sendVerificationEmail(String toEmail, String token) {
+
+        String apiKey = System.getenv("SENDGRID_API_KEY");
+
+        SendGrid sg = new SendGrid(apiKey);
+
+        Email from = new Email(System.getenv("SENDGRID_FROM_EMAIL"));
+        Email to = new Email(toEmail);
+
+        String subject = "Verify your email";
+
+        String contentText =
+                "Click to verify: https://your-app.com/verify?token=" + token;
+
+        Content content = new Content("text/plain", contentText);
+
+        Mail mail = new Mail(from, subject, to, content);
+
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            sg.api(request);
+
+        } catch (IOException ex) {
+            throw new RuntimeException("Email sending failed", ex);
+        }
+    }
+
 }
 	
