@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -117,10 +118,10 @@ public class AuthService {
 	 * IMPORTANT repo.save(blogger); }
 	 */
     public String login(String username, String password) {
-        manager.authenticate(
+        Authentication authentication = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
-        UserDetails userDetails = customUserDetails.loadUserByUsername(username);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         return jwt.generate(userDetails);
     }
