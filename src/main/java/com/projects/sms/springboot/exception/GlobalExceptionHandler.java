@@ -16,6 +16,7 @@
 
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -55,5 +56,10 @@ public class GlobalExceptionHandler {
                         "error", "USER_NOT_FOUND",
                         "message", ex.getMessage()
                 ));
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDuplicate(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("Duplicate entry (username/email already exists)");
     }
 }

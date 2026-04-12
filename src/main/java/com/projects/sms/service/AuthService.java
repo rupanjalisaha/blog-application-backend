@@ -72,6 +72,13 @@ public class AuthService {
 
     public Blogger register(BloggerRequest request) {
     	Blogger blogger=new Blogger();
+    	if (repo.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (repo.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
     	blogger.setUsername(request.getUsername());
     	blogger.setPassword(passwordEncoder.encode(request.getPassword()));
     	blogger.setFullName(request.getFullName());

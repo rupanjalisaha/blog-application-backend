@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<Blogger, Long> {
     
     Optional<Blogger> findByVerificationToken(String token);
     
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+    
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "UPDATE blogger SET password = :password WHERE username = :username", nativeQuery = true)
