@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 
         	    "<div style='max-width:600px; margin:auto; background:#ffffff; padding:20px; border-radius:8px; text-align:center;'>" +
 
-        	    "<h2 style='color:#333;'>Email Verification</h2>" +
+        	    "<h2 style='color:#333;'>Email Verification From UVB portal</h2>" +
 
         	    "<p style='color:#555;'>Thanks for registering.</p>" +
         	    "<p style='color:#555;'>Please verify your email by clicking the button below:</p>" +
