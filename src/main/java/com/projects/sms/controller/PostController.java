@@ -1,5 +1,5 @@
 package com.projects.sms.controller;
-
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +54,7 @@ public class PostController {
 		return postRepository.findById(id).orElseThrow(()->new PostNotFoundException(id));
 	}
 	
+	@Transactional
     @GetMapping("/blogsByUser/{username}")
     public List<Post> getPostsByUsername(@PathVariable String username) {
         return postRepository.findPostsByUsernameNative(username);

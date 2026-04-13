@@ -1,5 +1,6 @@
 package com.projects.sms.entity;
-
+import jakarta.persistence.Basic;
+import jakarta.persistence.FetchType;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -30,6 +31,7 @@ public class Post {
 	public String postTitle;
 	
 	@Lob
+	@Basic(fetch = FetchType.EAGER)
 	@Column(name="article_body", nullable=false)
 	private String postBody;
 	
