@@ -91,8 +91,8 @@ public class AuthService {
         String token = UUID.randomUUID().toString();
     	blogger.setVerificationToken(token);
     	blogger.setVerified(false);
-    	blogger.setExpiryDate(LocalDateTime.now().plusMinutes(20));
-        repo.save(blogger);
+    	blogger.setExpiryDate(LocalDateTime.now().plusMinutes(30));
+    	repo.save(blogger);
         emailService.sendVerificationEmail(blogger.getEmail(), token);
         return blogger;
     }
@@ -127,6 +127,12 @@ public class AuthService {
 	 * IMPORTANT repo.save(blogger); }
 	 */
     public String login(String username, String password) {
+        Blogger blogger = repo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!blogger.isVerified()) {
+            throw new RuntimeException("Please verify your email before logging in.");
+        }
         Authentication authentication = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
@@ -134,4 +140,5 @@ public class AuthService {
         
         return jwt.generate(userDetails);
     }
+    
 }

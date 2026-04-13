@@ -62,11 +62,12 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						//public endpoints
-						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/email-verification", "/UVB/users/reset-password/**","/UVB/blogs/blogsByUser/**").permitAll()
+						.requestMatchers("/UVB/login", "/UVB/register", "/UVB/email-verification", "/UVB/users/reset-password/**").permitAll()
 						//public Image API
 						.requestMatchers(HttpMethod.GET,
 							    "/UVB/bloggers/profileImages/**"
 							).permitAll()
+						.requestMatchers(HttpMethod.GET, "/UVB/blogs/blogsByUser/**").permitAll()
 						//test endpoint
 						.requestMatchers(HttpMethod.GET,"/UVB/**").authenticated()
 						.requestMatchers(HttpMethod.PUT, "/UVB/**").authenticated()
