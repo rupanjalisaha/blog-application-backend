@@ -1,5 +1,6 @@
 package com.projects.sms.controller;
 
+import com.projects.sms.repository.PostRepository;
 import com.projects.sms.dtos.ProfileImageDto;
 import com.projects.sms.entity.Blogger;
 import com.projects.sms.entity.BloggerRequest;
@@ -53,12 +54,13 @@ public class UserController {
 
 	private final ResetPasswordService resetService;
 	
+	private final PostRepository postrepo;
 
 	private final RoleRepository roleRepository;
 	
 	private final ProfileImageRepository profileImageRepository;
 	
-    UserController(BloggerRoleService bloggerRoleService,ResetPasswordService resetService, ProfileImageRepository profileImageRepository, UserRepository userRepository,AuthService service, RoleRepository roleRepository, CustomUserDetails userDetails) { 
+    UserController(BloggerRoleService bloggerRoleService,ResetPasswordService resetService, ProfileImageRepository profileImageRepository, UserRepository userRepository,AuthService service, RoleRepository roleRepository, CustomUserDetails userDetails, PostRepository postrepo) { 
         this.bloggerRoleService=bloggerRoleService;
         this.resetService=resetService;
         this.profileImageRepository=profileImageRepository;
@@ -66,6 +68,7 @@ public class UserController {
         this.service=service;
         this.roleRepository = roleRepository;
         this.userDetails = userDetails;
+        this.postrepo=postrepo;
     }
     
     public Set<Role> mapRole(String roleName) {
@@ -217,6 +220,7 @@ public class UserController {
 		RuntimeException("Unauthorized: Cannot delete other users"); }
 		
 		userRepository.deleteById(id);
+		postrepo.deletePostByWritername(targetUser.getUsername());
 		return "Success: Blogger details with id "+id+" has been deleted";
 	}
 	
