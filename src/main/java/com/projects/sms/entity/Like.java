@@ -6,9 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="post_likes")
+@Table(name="post_likes", uniqueConstraints = {
+	    @UniqueConstraint(columnNames = {"user_id", "post_id"})
+	})
 public class Like {
 	
 	@Id
