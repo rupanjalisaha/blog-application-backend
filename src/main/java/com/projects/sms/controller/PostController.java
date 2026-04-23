@@ -76,7 +76,7 @@ public class PostController {
 	
     @PostMapping("/blogsDetails/{postId}")
     public ResponseEntity<?> toggleLike(@PathVariable Long postId) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication());
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	Object principal = auth.getPrincipal();
     	String username;
     	if (principal instanceof UserDetails) {
