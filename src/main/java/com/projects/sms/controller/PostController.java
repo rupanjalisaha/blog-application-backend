@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,9 +76,16 @@ public class PostController {
 	
     @PostMapping("/blogsDetails/{postId}")
     public ResponseEntity<?> toggleLike(@PathVariable Long postId) {
-    	Long userId = ((Blogger) SecurityContextHolder.getContext()
-	            .getAuthentication())
-	            .getId();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication());
+    	Object principal = auth.getPrincipal();
+    	String username;
+    	if (principal instanceof UserDetails) {
+    	    username = ((UserDetails) principal).getUsername();
+    	}else {
+    		username = principal.toString();
+    	}
+    	Blogger blogger = userRepository.findByUsername(username).orElseThrow();
+    	Long userId = blogger.getId();
         return ResponseEntity.ok(likeService.toggleLike(userId, postId));
     }
 
