@@ -26,6 +26,8 @@ public class LikeService {
 
         Optional<Like> existing = likeRepo.findByUserIdAndPostId(userId, postId);
 
+        System.out.println("Checking existing like..."+existing);
+
         if (existing.isPresent()) {
             likeRepo.delete(existing.get());
             return "Post unliked";

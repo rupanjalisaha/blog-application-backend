@@ -30,9 +30,8 @@ public class Post {
 	@Column(name="article_title",nullable=false)
 	public String postTitle;
 	
-	@Lob
 	@Basic(fetch = FetchType.EAGER)
-	@Column(name="article_body", nullable=false)
+	@Column(name="article_body", columnDefinition = "TEXT", nullable=false)
 	private String postBody;
 	
 	
