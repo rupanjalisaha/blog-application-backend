@@ -28,6 +28,8 @@ public class Comment {
 	    
 	    private String content;
 
+		private LocalDateTime createdAt;
+
 	    @ManyToOne
 	    @JoinColumn(name="parent_id")
 	    private Comment parent; // null = root comment
@@ -90,7 +92,5 @@ public class Comment {
 		public void setCreatedAt(LocalDateTime createdAt) {
 			this.createdAt = createdAt;
 		}
-
-		private LocalDateTime createdAt;
 
 }

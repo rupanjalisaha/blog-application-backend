@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.projects.sms.entity.Comment;
 import com.projects.sms.repository.CommentRepository;
@@ -14,6 +15,7 @@ import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.UserRepository;
 import com.projects.sms.entity.CommentDto;
 
+@Service
 public class CommentService {
 	
     @Autowired

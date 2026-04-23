@@ -20,7 +20,6 @@ import com.projects.sms.entity.Post;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.service.CommentService;
 import com.projects.sms.service.LikeService;
-import com.projects.sms.service.PostService;
 import com.projects.sms.springboot.exception.PostNotFoundAdvice;
 import com.projects.sms.springboot.exception.PostNotFoundException;
 
@@ -32,17 +31,17 @@ public class PostController {
 	
 	private final PostNotFoundAdvice postNotFoundAdvice;
 	
-    @Autowired
-    private LikeService likeService;
+    private final LikeService likeService;
     
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
 
 	@Autowired
 	private PostRepository postRepository;
 	
-	PostController(PostNotFoundAdvice postNotFoundAdvice) { 
+	PostController(PostNotFoundAdvice postNotFoundAdvice, LikeService likeService, CommentService commentService) { 
         this.postNotFoundAdvice = postNotFoundAdvice;
+        this.likeService = likeService;
+        this.commentService = commentService;
     }
 
 	@PostMapping("/writeBlogs")

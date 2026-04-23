@@ -3,12 +3,14 @@ package com.projects.sms.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.projects.sms.entity.Like;
 import com.projects.sms.repository.LikeRepository;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.UserRepository;
 
+@Service
 public class LikeService {
 	
     @Autowired
