@@ -1,6 +1,7 @@
 package com.projects.sms.controller;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projects.sms.entity.Blogger;
 import com.projects.sms.entity.CommentDto;
 import com.projects.sms.entity.Post;
 import com.projects.sms.repository.PostRepository;
+import com.projects.sms.repository.UserRepository;
 import com.projects.sms.service.CommentService;
 import com.projects.sms.service.LikeService;
 import com.projects.sms.springboot.exception.PostNotFoundAdvice;
@@ -37,6 +40,9 @@ public class PostController {
 
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	PostController(PostNotFoundAdvice postNotFoundAdvice, LikeService likeService, CommentService commentService) { 
         this.postNotFoundAdvice = postNotFoundAdvice;
@@ -66,8 +72,10 @@ public class PostController {
 	}
 	
     @PostMapping("/blogsDetails/{postId}")
-    public ResponseEntity<?> toggleLike(@PathVariable Long postId,
-                                        @RequestParam Long userId) {
+    public ResponseEntity<?> toggleLike(@PathVariable Long postId) {
+    	String post_username = postRepository.findUsernameBypostId(postId);
+    	Blogger blogger = userRepository.findByUsername(post_username).orElseThrow();
+    	Long userId = blogger.getId();
         return ResponseEntity.ok(likeService.toggleLike(userId, postId));
     }
 

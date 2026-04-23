@@ -17,6 +17,9 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 	@Query(value = "SELECT p.* FROM post p JOIN blogger b ON p.writer_name=b.username WHERE b.username = :username", nativeQuery = true)
     List<Post> findPostsByUsernameNative(@Param("username") String username);
 
+	@Query(value="SELECT writer_name FROM post WHERE post.id = :postId", nativeQuery = true)
+	String findUsernameBypostId(@Param("postId") Long postId);
+	
 	@Modifying
 	@Transactional
 	@Query(value="DELETE FROM post where writer_name = ?1", nativeQuery = true)
