@@ -3,6 +3,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projects.sms.entity.CommentDto;
 import com.projects.sms.entity.Post;
 import com.projects.sms.repository.PostRepository;
+import com.projects.sms.service.CommentService;
+import com.projects.sms.service.LikeService;
 import com.projects.sms.service.PostService;
 import com.projects.sms.springboot.exception.PostNotFoundAdvice;
 import com.projects.sms.springboot.exception.PostNotFoundException;
@@ -24,8 +29,15 @@ import com.projects.sms.springboot.exception.PostNotFoundException;
 @CrossOrigin("https://blogger-management-system.vercel.app")
 //@CrossOrigin("http://localhost:3000")
 public class PostController {
+	
 	private final PostNotFoundAdvice postNotFoundAdvice;
 	
+    @Autowired
+    private LikeService likeService;
+    
+    @Autowired
+    private CommentService commentService;
+
 	@Autowired
 	private PostRepository postRepository;
 	
@@ -54,6 +66,17 @@ public class PostController {
 		return postRepository.findById(id).orElseThrow(()->new PostNotFoundException(id));
 	}
 	
+    @PostMapping("/blogsDetails/{postId}")
+    public ResponseEntity<?> toggleLike(@PathVariable Long postId,
+                                        @RequestParam Long userId) {
+        return ResponseEntity.ok(likeService.toggleLike(userId, postId));
+    }
+
+    @GetMapping("/blogsDetails/{postId}/count")
+    public long getLikes(@PathVariable Long postId) {
+        return likeService.getLikeCount(postId);
+    }
+
 	@Transactional
     @GetMapping("/blogsByUser/{username}")
     public List<Post> getPostsByUsername(@PathVariable String username) {
@@ -79,5 +102,21 @@ public class PostController {
 		postRepository.deleteById(id);
 		return "Success: Post details with id "+id+" has been deleted";
 	}
-	
+    
+    @PostMapping("/comments")
+    public ResponseEntity<?> addComment(@RequestParam Long userId,
+                                        @RequestParam Long postId,
+                                        @RequestParam String content,
+                                        @RequestParam(required = false) Long parentId) {
+
+        return ResponseEntity.ok(
+                commentService.addComment(userId, postId, content, parentId)
+        );
+    }
+
+    @GetMapping("/comments/{postId}")
+    public List<CommentDto> getComments(@PathVariable Long postId) {
+        return commentService.getNestedComments(postId);
+    }
+
 }

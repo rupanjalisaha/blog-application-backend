@@ -145,7 +145,7 @@ public class UserController {
     
     @GetMapping("/bloggerDetails")
 	List<Blogger> getBloggerDetails(){
-		return userRepository.findAll();
+    	return userRepository.findAll();
 	}
 	
 	@GetMapping("/user/bloggerDetails/{id}")
