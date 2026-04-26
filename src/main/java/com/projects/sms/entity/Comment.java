@@ -1,6 +1,7 @@
 package com.projects.sms.entity;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
-import com.projects.sms.entity.Blogger;
 
 @Entity
 public class Comment {
@@ -28,7 +27,7 @@ public class Comment {
 	    
 	    private String content;
 
-		private LocalDateTime createdAt;
+		private ZonedDateTime createdAt;
 
 	    @ManyToOne
 	    @JoinColumn(name="parent_id")
@@ -85,12 +84,12 @@ public class Comment {
 			this.content = content;
 		}
 
-		public LocalDateTime getCreatedAt() {
+		public ZonedDateTime getCreatedAt() {
 			return createdAt;
 		}
 
-		public void setCreatedAt(LocalDateTime createdAt) {
-			this.createdAt = createdAt;
+		public void setCreatedAt(ZonedDateTime zonedDateTime) {
+			this.createdAt = zonedDateTime;
 		}
 
 }

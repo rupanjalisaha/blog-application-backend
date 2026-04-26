@@ -1,6 +1,8 @@
 package com.projects.sms.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ public class CommentService {
             comment.setParent(parent);
         }
 
+        comment.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));        
         return commentRepo.save(comment);
     }
 
