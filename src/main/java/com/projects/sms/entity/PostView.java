@@ -29,15 +29,7 @@ public class PostView {
     @Column(name="ip_address")
     private String ipAddress;
     
-    private Long viewCount = 0L;
-    
-    public Long getViewCount() {
-		return viewCount;
-	}
-	public void setViewCount(Long viewCount) {
-		this.viewCount = viewCount;
-	}
-	private LocalDateTime viewedAt;
+    private LocalDateTime viewedAt;
     
     public Long getId() {
 		return id;

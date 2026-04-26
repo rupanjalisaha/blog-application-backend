@@ -33,6 +33,17 @@ public class Post {
 	@Column(name="created_at")
 	public LocalDateTime createdAt;
 	
+	@Column(name = "view_count")
+	private Long viewCount = 0L;
+	
+	public Long getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(Long viewCount) {
+		this.viewCount = viewCount;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
