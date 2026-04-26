@@ -150,9 +150,9 @@ public class PostController {
         return commentService.getNestedComments(postId);
     }
     
-    @DeleteMapping("/removeComments/{postId}")
+    @DeleteMapping("/removeComments/{commentId}")
     public String deleteCommentMessage(@PathVariable Long commentId) {
-    	if (commentRepo.existsById(commentId)) {
+    	if (!commentRepo.existsById(commentId)) {
     		throw new RuntimeException("Comment not found");
     	}
     	commentRepo.deleteById(commentId);
