@@ -35,7 +35,7 @@ public class PostService {
             view.setIpAddress(ip);
             view.setViewedAt(LocalDateTime.now());
             repo.save(view);
-            postRepository.incrementViewCount(postId);
+            repo.incrementViewCount(postId);
         }}catch(Exception e) {
         	System.out.println("logged some error "+e.getMessage());
         }
