@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projects.sms.entity.Blogger;
+import com.projects.sms.entity.Comment;
 import com.projects.sms.entity.CommentDto;
 import com.projects.sms.entity.Post;
+import com.projects.sms.repository.CommentRepository;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.UserRepository;
 import com.projects.sms.service.CommentService;
@@ -43,6 +45,9 @@ public class PostController {
 
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private CommentRepository commentRepo;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -144,5 +149,19 @@ public class PostController {
     public List<CommentDto> getComments(@PathVariable Long postId) {
         return commentService.getNestedComments(postId);
     }
-
+    
+    @DeleteMapping("/removeComments/{postId}")
+    public String deleteCommentMessage(@PathVariable Long commentId) {
+    	if (commentRepo.existsById(commentId)) {
+    		throw new RuntimeException("Comment not found");
+    	}
+    	commentRepo.deleteById(commentId);
+    	return "Comment with id "+commentId+" deleted successfully";
+    }
+    
+	/*
+	 * @PutMapping("/editComments/{postId}") public Comment editComment(@RequestBody
+	 * Comment comment, @PathVariable Long commentId) { return
+	 * commentRepo.findById(commentId).map(c->{ c.setUsername(comment.) }) }
+	 */
 }
