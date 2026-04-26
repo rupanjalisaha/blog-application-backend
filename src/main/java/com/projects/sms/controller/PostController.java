@@ -121,10 +121,19 @@ public class PostController {
 	}
     
     @PostMapping("/comments")
-    public ResponseEntity<?> addComment(@RequestParam Long userId,
-                                        @RequestParam Long postId,
-                                        @RequestParam String content,
+    public ResponseEntity<?> addComment(@RequestParam Long postId,
+                                        @RequestBody String content,
                                         @RequestParam(required = false) Long parentId) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Object principal = auth.getPrincipal();
+    	String username;
+    	if (principal instanceof UserDetails) {
+    	    username = ((UserDetails) principal).getUsername();
+    	}else {
+    		username = principal.toString();
+    	}
+    	Blogger blogger = userRepository.findByUsername(username).orElseThrow();
+    	Long userId = blogger.getId();
 
         return ResponseEntity.ok(
                 commentService.addComment(userId, postId, content, parentId)
