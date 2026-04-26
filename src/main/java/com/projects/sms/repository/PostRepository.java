@@ -26,6 +26,7 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 	void deletePostByWritername(String writerName);
 
 	@Modifying
+	@Transactional
 	@Query("UPDATE Post p SET p.viewCount = p.viewCount + 1 WHERE p.id = :postId")
 	void incrementViewCount(Long postId);
 }
