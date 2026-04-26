@@ -30,6 +30,17 @@ public class Post {
 	@Column(name="article_title",nullable=false)
 	public String postTitle;
 	
+	@Column(name="created_at")
+	public LocalDateTime createdAt;
+	
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	@Basic(fetch = FetchType.EAGER)
 	@Column(name="article_body", columnDefinition = "TEXT", nullable=false)
 	private String postBody;

@@ -1,5 +1,8 @@
 package com.projects.sms.controller;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +26,13 @@ import com.projects.sms.entity.Blogger;
 import com.projects.sms.entity.Comment;
 import com.projects.sms.entity.CommentDto;
 import com.projects.sms.entity.Post;
+import com.projects.sms.entity.ViewRequest;
 import com.projects.sms.repository.CommentRepository;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.UserRepository;
 import com.projects.sms.service.CommentService;
 import com.projects.sms.service.LikeService;
+import com.projects.sms.service.PostService;
 import com.projects.sms.springboot.exception.PostNotFoundAdvice;
 import com.projects.sms.springboot.exception.PostNotFoundException;
 
@@ -43,6 +48,7 @@ public class PostController {
     
     private final CommentService commentService;
 
+    private final PostService postService;
 	@Autowired
 	private PostRepository postRepository;
 	
@@ -52,10 +58,11 @@ public class PostController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	PostController(PostNotFoundAdvice postNotFoundAdvice, LikeService likeService, CommentService commentService) { 
+	PostController(PostNotFoundAdvice postNotFoundAdvice, LikeService likeService, CommentService commentService, PostService postService) { 
         this.postNotFoundAdvice = postNotFoundAdvice;
         this.likeService = likeService;
         this.commentService = commentService;
+        this.postService = postService;
     }
 
 	@PostMapping("/writeBlogs")
@@ -65,6 +72,7 @@ public class PostController {
     	post.setGenre(newPost.getGenre());
     	post.setPostTitle(newPost.getPostTitle());
     	post.setPostBody(newPost.getPostBody());
+    	post.setCreatedAt(LocalDateTime.now());
 		return postRepository.save(post);
     }
 
@@ -112,6 +120,7 @@ public class PostController {
 			post.setGenre(newPost.getGenre());
 			post.setPostTitle(newPost.getPostTitle());
 			post.setPostBody(newPost.getPostBody());
+			post.setCreatedAt(LocalDateTime.now());
 			return postRepository.save(post);
 		}).orElseThrow(()->new PostNotFoundException(id));
 	}
@@ -164,4 +173,21 @@ public class PostController {
 	 * Comment comment, @PathVariable Long commentId) { return
 	 * commentRepo.findById(commentId).map(c->{ c.setUsername(comment.) }) }
 	 */
+   @PostMapping("/views/{postId}")
+   public ResponseEntity<?> addPostViews(@PathVariable Long postId, @RequestBody ViewRequest request, HttpServletRequest httpRequest) {
+	   
+	   String ip = getClientIp(httpRequest);
+	   postService.trackView(postId, request.getSessionId(), ip);
+	   return ResponseEntity.ok().build();
+   }
+   
+   private String getClientIp(HttpServletRequest request) {
+	    String xfHeader = request.getHeader("X-Forwarded-For");
+
+	    if (xfHeader != null && !xfHeader.isEmpty()) {
+	        return xfHeader.split(",")[0];
+	    }
+
+	    return request.getRemoteAddr();
+	}
 }

@@ -1,8 +1,6 @@
 package com.projects.sms.service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,9 +37,12 @@ public class CommentService {
         if (parentId != null) {
             Comment parent = commentRepo.findById(parentId).orElseThrow();
             comment.setParent(parent);
+            if (!parent.getPost().getPostId().equals(postId)) {
+                throw new IllegalArgumentException("Parent comment belongs to different post");
+            }
         }
-
-        comment.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));        
+        
+        comment.setCreatedAt(LocalDateTime.now());        
         return commentRepo.save(comment);
     }
 
