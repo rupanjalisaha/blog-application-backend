@@ -27,6 +27,6 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 
 	@Modifying 
 	@Transactional 
-	@Query(value="UPDATE post SET view_count = view_count - 1 WHERE id = :postId", nativeQuery=true) 
+	@Query(value="UPDATE post SET view_count = view_count + 1 WHERE id = :postId", nativeQuery=true) 
 	void incrementViewCount(@Param("postId") Long postId);
 }
