@@ -1,6 +1,7 @@
 package com.projects.sms.entity;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +10,12 @@ public class CommentDto {
 	    private Long id;
 	    private String content;
 	    private String username;
-	    private LocalDateTime createdAt;
-	    public LocalDateTime getCreatedAt() {
+	    private ZonedDateTime createdAt;
+	    public ZonedDateTime getCreatedAt() {
 			return createdAt;
 		}
 
-		public void setCreatedAt(LocalDateTime createdAt) {
+		public void setCreatedAt(ZonedDateTime createdAt) {
 			this.createdAt = createdAt;
 		}
 
