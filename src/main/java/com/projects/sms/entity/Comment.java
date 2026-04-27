@@ -27,7 +27,7 @@ public class Comment {
 	    
 	    private String content;
 
-		private LocalDateTime createdAt;
+		private ZonedDateTime createdAt;
 
 	    @ManyToOne
 	    @JoinColumn(name="parent_id")
@@ -84,12 +84,12 @@ public class Comment {
 			this.content = content;
 		}
 
-		public LocalDateTime getCreatedAt() {
+		public ZonedDateTime getCreatedAt() {
 			return createdAt;
 		}
 
-		public void setCreatedAt(LocalDateTime localDateTime) {
-			this.createdAt = localDateTime;
+		public void setCreatedAt(ZonedDateTime zonedDateTime) {
+			this.createdAt = zonedDateTime;
 		}
 
 }

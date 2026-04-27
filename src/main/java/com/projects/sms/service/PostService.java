@@ -24,14 +24,14 @@ public class PostService {
         return postRepository.findPostsByUsernameNative(username);
     }
     
-    public void trackView(Long postId, String sessionId, String ip) {
-        boolean alreadyViewed = repo.existsByPostAndSession(postId, sessionId);
+    public void trackView(Long postId, Long userId, String ip) {
+        boolean alreadyViewed = repo.existsByPostAndSession(postId, userId);
         
         try {
         if (!alreadyViewed) {
             PostView view = new PostView();
             view.setPostId(postId);
-            view.setSessionId(sessionId);
+            view.setUserId(userId);
             view.setIpAddress(ip);
             view.setViewedAt(LocalDateTime.now());
             repo.save(view);

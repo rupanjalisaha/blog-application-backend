@@ -12,7 +12,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="post_views", uniqueConstraints = {
-	    @UniqueConstraint(columnNames = {"post_id", "session_id"})
+	    @UniqueConstraint(columnNames = {"post_id", "user_id"})
 	})
 public class PostView {
     
@@ -23,10 +23,10 @@ public class PostView {
 	@Column(name="post_id")
     private Long postId;
 	
-	@Column(name="session_id")
-    private String sessionId;
+	@Column(name="user_id")
+    private Long userId;
     
-    @Column(name="ip_address")
+	@Column(name="ip_address")
     private String ipAddress;
     
     private LocalDateTime viewedAt;
@@ -43,11 +43,11 @@ public class PostView {
 	public void setPostId(Long postId) {
 		this.postId = postId;
 	}
-	public String getSessionId() {
-		return sessionId;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public String getIpAddress() {
 		return ipAddress;

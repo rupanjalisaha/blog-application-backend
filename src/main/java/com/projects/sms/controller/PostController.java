@@ -139,6 +139,9 @@ public class PostController {
                                         @RequestBody String content,
                                         @RequestParam(required = false) Long parentId) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+    	    return ResponseEntity.status(401).body("User not authenticated");
+    	}
     	Object principal = auth.getPrincipal();
     	String username;
     	if (principal instanceof UserDetails) {
@@ -174,11 +177,25 @@ public class PostController {
 	 * commentRepo.findById(commentId).map(c->{ c.setUsername(comment.) }) }
 	 */
    @PostMapping("/views/{postId}")
-   public ResponseEntity<?> addPostViews(@PathVariable Long postId, @RequestBody ViewRequest request, HttpServletRequest httpRequest) {
+   public ResponseEntity<?> addPostViews(@PathVariable Long postId, HttpServletRequest httpRequest) {
 	   
+	   Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	   if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+		    return ResponseEntity.status(401).body("User not authenticated");
+		}
+	   	Object principal = auth.getPrincipal();
+	   	String username;
+	   	if (principal instanceof UserDetails) {
+	   	    username = ((UserDetails) principal).getUsername();
+	   	}else {
+	   		username = principal.toString();
+	   	}
+	   	Blogger blogger = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+	   	Long userId = blogger.getId();
+
 	   String ip = getClientIp(httpRequest);
-	   postService.trackView(postId, request.getSessionId(), ip);
-	   return ResponseEntity.ok().build();
+	   postService.trackView(postId, userId, ip);
+	   return ResponseEntity.ok("View recorded");
    }
    
    private String getClientIp(HttpServletRequest request) {
