@@ -28,6 +28,7 @@ import com.projects.sms.entity.CommentDto;
 import com.projects.sms.entity.Post;
 import com.projects.sms.entity.ViewRequest;
 import com.projects.sms.repository.CommentRepository;
+import com.projects.sms.repository.LikeRepository;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.UserRepository;
 import com.projects.sms.service.CommentService;
@@ -54,6 +55,9 @@ public class PostController {
 	
 	@Autowired
 	private CommentRepository commentRepo;
+	
+	@Autowired
+	private LikeRepository likeRepo;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -207,4 +211,10 @@ public class PostController {
 
 	    return request.getRemoteAddr();
 	}
+   
+   @GetMapping("/topRankingPosts")
+   public List<Post> getTopRankingPosts() {
+	   List<Long> topPostIdList = likeRepo.findPostIdofTopPosts();
+	   return postRepository.findAllById(topPostIdList);
+   }
 }
