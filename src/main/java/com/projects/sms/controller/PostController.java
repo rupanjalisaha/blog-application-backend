@@ -217,4 +217,9 @@ public class PostController {
 	   List<Long> topPostIdList = likeRepo.findPostIdofTopPosts();
 	   return postRepository.findAllById(topPostIdList);
    }
+   
+   @GetMapping("/topPosts")
+   public List<Object[]> getTopPostsBasedOnScore(){
+	   return postRepository.findTopPosts();
+   }
 }

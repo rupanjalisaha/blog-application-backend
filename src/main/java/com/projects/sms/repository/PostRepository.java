@@ -29,4 +29,24 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 	@Transactional 
 	@Query(value="UPDATE post SET view_count = view_count + 1 WHERE id = :postId", nativeQuery=true) 
 	void incrementViewCount(@Param("postId") Long postId);
+	
+	@Query(value="SELECT p.id,\r\n"
+			+ "       p.article_title,\r\n"
+			+ "       p.view_count,p.article_genre,\r\n"
+			+ "	   p.article_body,\r\n"
+			+ "	   p.writer_name,\r\n"
+			+ "	   p.created_at,\r\n"
+			+ "       COUNT(DISTINCT l.id) as likeCount,\r\n"
+			+ "       COUNT(DISTINCT c.id) as commentCount,\r\n"
+			+ "       (\r\n"
+			+ "         (p.view_count * 1) +\r\n"
+			+ "         (COUNT(DISTINCT l.id) * 4) +\r\n"
+			+ "         (COUNT(DISTINCT c.id) * 6)\r\n"
+			+ "       ) as score\r\n"
+			+ "FROM post p\r\n"
+			+ "LEFT JOIN post_likes l ON l.post_id = p.id\r\n"
+			+ "LEFT JOIN Comment c ON c.post_id = p.id\r\n"
+			+ "GROUP BY p.id\r\n"
+			+ "ORDER BY score DESC LIMIT 5")
+	List<Object[]> findTopPosts();
 }
