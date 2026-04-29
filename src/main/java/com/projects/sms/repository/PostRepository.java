@@ -47,6 +47,6 @@ public interface PostRepository extends JpaRepository<Post,Long>{
 			+ "LEFT JOIN post_likes l ON l.post_id = p.id\r\n"
 			+ "LEFT JOIN Comment c ON c.post_id = p.id\r\n"
 			+ "GROUP BY p.id\r\n"
-			+ "ORDER BY score DESC LIMIT 5")
+			+ "ORDER BY score DESC LIMIT 5", nativeQuery=true)
 	List<Object[]> findTopPosts();
 }
