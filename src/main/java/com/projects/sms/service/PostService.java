@@ -4,8 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.projects.sms.dtos.PostSpecification;
+import com.projects.sms.dtos.SearchRequest;
 import com.projects.sms.entity.Post;
 import com.projects.sms.entity.PostView;
 import com.projects.sms.repository.PostRepository;
@@ -40,4 +46,28 @@ public class PostService {
         	System.out.println("logged some error "+e.getMessage());
         }
         }
+    public Page<Post> searchFreeTier(SearchRequest req) {
+
+        // 🚫 Ignore premium filters explicitly
+        req.setMinViews(null);
+        req.setMaxViews(null);
+        req.setAuthorId(null);
+        req.setStartDate(null);
+        req.setEndDate(null);
+
+        // Sorting logic
+        Sort sort = Sort.by("createdAt").descending();
+
+        if ("likes".equalsIgnoreCase(req.getSortBy())) {
+            sort = Sort.by("likes").descending();
+        }
+
+        Pageable pageable = PageRequest.of(req.getPage(), req.getSize(), sort);
+
+        return postRepository.findAll(
+                PostSpecification.filter(req),
+                pageable
+        );
+    }
+
 }

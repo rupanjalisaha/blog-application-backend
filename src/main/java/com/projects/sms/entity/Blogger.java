@@ -37,6 +37,8 @@ public class Blogger{
 	private boolean isVerified = false;
 	private String verificationToken;
 	private LocalDateTime expiryDate;
+	private String subscription = "Free";
+	
 	@OneToMany(
 		    mappedBy = "blogger",
 		    cascade = CascadeType.ALL,
@@ -49,6 +51,7 @@ public class Blogger{
     joinColumns = @JoinColumn(name = "blogger_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles= new HashSet<>();
     
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -131,6 +134,12 @@ public class Blogger{
 	}
 	public void setVerificationToken(String verificationToken) {
 		this.verificationToken = verificationToken;
+	}
+	public String getSubscription() {
+		return subscription;
+	}
+	public void setSubscription(String subscription) {
+		this.subscription = subscription;
 	}
 	
 }

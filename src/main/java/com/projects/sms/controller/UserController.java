@@ -134,6 +134,7 @@ public class UserController {
                 "message", "Login Successful",
                 "bloggerId", blogger.getId(),
                 "username",blogger.getUsername(),
+                "userType",blogger.getSubscription(),
                 "token", token
         ));
         }catch(Exception e) {

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projects.sms.dtos.SearchRequest;
 import com.projects.sms.entity.Blogger;
 import com.projects.sms.entity.Comment;
 import com.projects.sms.entity.CommentDto;
@@ -222,4 +224,23 @@ public class PostController {
    public List<Object[]> getTopPostsBasedOnScore(){
 	   return postRepository.findTopPosts();
    }
+   
+   @GetMapping("/search/free")
+   public Page<Post> searchFreeTier(
+           @RequestParam(required = false) String keyword,
+           @RequestParam(required = false) String genre,
+           @RequestParam(defaultValue = "latest") String sortBy,
+           @RequestParam(defaultValue = "0") int page,
+           @RequestParam(defaultValue = "10") int size
+   ) {
+
+       SearchRequest req = new SearchRequest();
+               req.setKeyword(keyword);
+               req.setGenre(genre);
+               req.setSortBy(sortBy);
+               req.setPage(page);
+               req.setSize(size);
+       return postService.searchFreeTier(req);
+   }
+
 }
