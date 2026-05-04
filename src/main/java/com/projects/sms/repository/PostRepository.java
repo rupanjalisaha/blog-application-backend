@@ -50,4 +50,10 @@ public interface PostRepository extends JpaRepository<Post,Long>,JpaSpecificatio
 			+ "GROUP BY p.id\r\n"
 			+ "ORDER BY score DESC LIMIT 5", nativeQuery=true)
 	List<Object[]> findTopPosts();
+	
+	@Query(value="UPDATE post SET likes=likes+1 WHERE id=:postId", nativeQuery=true)
+	public void increaseLikeCount(@Param("postId") Long postId);
+	
+	@Query(value="UPDATE post SET likes=likes-1 WHERE id=:postId", nativeQuery=true)
+	public void reduceLikeCount(@Param("postId") Long postId);
 }

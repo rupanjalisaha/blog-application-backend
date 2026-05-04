@@ -58,8 +58,8 @@ public class PostService {
 
         String sortBy = req.getSortBy();
 
-        if ("likes".equalsIgnoreCase(sortBy)) {
-            sort = Sort.by(Sort.Direction.DESC, "likes");
+        if ("viewCount".equalsIgnoreCase(sortBy)) {
+            sort = Sort.by(Sort.Direction.DESC, "viewCount");
         } else {
             sort = Sort.by(Sort.Direction.DESC, "createdAt");
         }

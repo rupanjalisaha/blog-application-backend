@@ -30,14 +30,15 @@ public class LikeService {
 
         if (existing.isPresent()) {
             likeRepo.delete(existing.get());
+            postRepo.reduceLikeCount(postId);
             return "Post unliked";
         }
 
         Like like = new Like();
         like.setUser(userRepo.findById(userId).orElseThrow());
         like.setPost(postRepo.findById(postId).orElseThrow());
-
         likeRepo.save(like);
+        postRepo.increaseLikeCount(postId);
         return "Post liked";
     }
 

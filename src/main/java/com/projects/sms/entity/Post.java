@@ -36,6 +36,16 @@ public class Post {
 	@Column(name = "view_count")
 	private Long viewCount = 0L;
 	
+	private Long likes = 0L;
+	
+	public Long getLikes() {
+		return likes;
+	}
+
+	public void setLikes(Long likes) {
+		this.likes = likes;
+	}
+
 	public Long getViewCount() {
 		return viewCount;
 	}
