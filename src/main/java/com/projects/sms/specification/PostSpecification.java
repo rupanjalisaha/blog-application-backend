@@ -17,9 +17,9 @@ public class PostSpecification {
 
             List<Predicate> predicates = new ArrayList<>();
 
-            String keyword = "%" + req.getKeyword().toLowerCase() + "%";
+            String keyword = "%" + req.getKeyword().trim().toLowerCase() + "%";
             // Keyword search (title + content)
-            if (req.getKeyword() != null && !req.getKeyword().isEmpty()) {
+            if (req.getKeyword() != null && !req.getKeyword().trim().isEmpty()) {
                 Predicate titleMatch = cb.like(
                         cb.lower(root.get("postTitle")),
                         keyword
