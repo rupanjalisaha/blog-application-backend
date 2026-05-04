@@ -54,14 +54,15 @@ public class PostService {
         req.setStartDate(null);
         req.setEndDate(null);
 
-        
-        // Sorting logic
-        Sort sort = Sort.by("createdAt").descending();
+        Sort sort;
 
-        if ("likes".equalsIgnoreCase(req.getSortBy())) {
-            sort = Sort.by("likes").descending();
+        String sortBy = req.getSortBy();
+
+        if ("likes".equalsIgnoreCase(sortBy)) {
+            sort = Sort.by(Sort.Direction.DESC, "likes");
+        } else {
+            sort = Sort.by(Sort.Direction.DESC, "createdAt");
         }
-
         Pageable pageable = PageRequest.of(req.getPage(), req.getSize(), sort);
 
         return postRepository.findAll(
