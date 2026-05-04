@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.projects.sms.dtos.PostSpecification;
 import com.projects.sms.dtos.SearchRequest;
 import com.projects.sms.entity.Post;
 import com.projects.sms.entity.PostView;
@@ -55,6 +54,7 @@ public class PostService {
         req.setStartDate(null);
         req.setEndDate(null);
 
+        
         // Sorting logic
         Sort sort = Sort.by("createdAt").descending();
 
