@@ -1,4 +1,4 @@
-package com.projects.sms.dtos;
+package com.projects.sms.specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.*;
 
+import com.projects.sms.dtos.SearchRequest;
 import com.projects.sms.entity.Post;
 
 public class PostSpecification {
@@ -19,12 +20,12 @@ public class PostSpecification {
             // Keyword search (title + content)
             if (req.getKeyword() != null && !req.getKeyword().isEmpty()) {
                 Predicate titleMatch = cb.like(
-                        cb.lower(root.get("title")),
+                        cb.lower(root.get("postTitle")),
                         "%" + req.getKeyword().toLowerCase() + "%"
                 );
 
                 Predicate contentMatch = cb.like(
-                        cb.lower(root.get("content")),
+                        cb.lower(root.get("postBody")),
                         "%" + req.getKeyword().toLowerCase() + "%"
                 );
 
@@ -33,7 +34,7 @@ public class PostSpecification {
 
             // Genre filter
             if (req.getGenre() != null && !req.getGenre().isEmpty()) {
-                predicates.add(cb.equal(root.get("tag"), req.getGenre()));
+                predicates.add(cb.equal(root.get("genre"), req.getGenre()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

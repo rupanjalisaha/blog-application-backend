@@ -16,7 +16,7 @@ import com.projects.sms.entity.Post;
 import com.projects.sms.entity.PostView;
 import com.projects.sms.repository.PostRepository;
 import com.projects.sms.repository.PostViewRepository;
-
+import com.projects.sms.specification.*;
 @Service
 public class PostService {
 
