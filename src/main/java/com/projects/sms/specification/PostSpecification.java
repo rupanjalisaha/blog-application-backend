@@ -17,19 +17,25 @@ public class PostSpecification {
 
             List<Predicate> predicates = new ArrayList<>();
 
+            String keyword = "%" + req.getKeyword().toLowerCase() + "%";
             // Keyword search (title + content)
             if (req.getKeyword() != null && !req.getKeyword().isEmpty()) {
                 Predicate titleMatch = cb.like(
                         cb.lower(root.get("postTitle")),
-                        "%" + req.getKeyword().toLowerCase() + "%"
+                        keyword
                 );
 
                 Predicate contentMatch = cb.like(
                         cb.lower(root.get("postBody")),
-                        "%" + req.getKeyword().toLowerCase() + "%"
+                        keyword
+                );
+                
+                Predicate genreMatch = cb.like(
+                        cb.lower(root.get("genre")),
+                        keyword
                 );
 
-                predicates.add(cb.or(titleMatch, contentMatch));
+                predicates.add(cb.or(titleMatch, contentMatch, genreMatch));
             }
 
             // Genre filter
